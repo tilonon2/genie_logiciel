@@ -1,26 +1,69 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const donnees = ref([
-        {titre: 'SUIVRE LES PAYEMENTS/DEPENSES', chemin:'/suivie_payement_depenses', info: 
-        'Ici vous pourrez voir les informations liées aux payements et aux depenses'},
-        {titre: "PAYEMENTS", chemin:'/payement' , info: 
-        "Ici vous pourrez faire tous les payments"},
+  {
+    titre: "SUIVRE LES PAYEMENTS/DEPENSES",
+    chemin: "/tableau_bord/suivie_payement_depenses",
+    info: "Ici vous pourrez voir les informations liées aux payements et aux depenses",
+  },
+  {
+    titre: "PAYEMENTS",
+    chemin: "/tableau_bord/payement",
+    info: "Ici vous pourrez faire tous les payments",
+  },
 ]);
-
 </script>
 <template>
-    <section class="btns">
-        <div class="card" v-for="(item, index) in donnees" :key="index">
-            <router-link :to="item.chemin" class="nav">
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <p class="heading_8264">TYKTAK BANK</p>
-                            <svg class="logo" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="36" height="36" viewBox="0 0 48 48">
-                            <path fill="#ff9800" d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z"></path><path fill="#d50000" d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z"></path><path fill="#ff3d00" d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z"></path>
-                            </svg>
-                            <svg version="1.1" class="chip" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 50 50" xml:space="preserve">  <image id="image0" width="50" height="50" x="0" y="0" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+  <section class="btns">
+    <div class="card" v-for="(item, index) in donnees" :key="index">
+      <router-link :to="item.chemin" class="nav">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <p class="heading_8264">TYKTAK BANK</p>
+              <svg
+                class="logo"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="36"
+                height="36"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  fill="#ff9800"
+                  d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z"
+                ></path>
+                <path
+                  fill="#d50000"
+                  d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z"
+                ></path>
+                <path
+                  fill="#ff3d00"
+                  d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z"
+                ></path>
+              </svg>
+              <svg
+                version="1.1"
+                class="chip"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                width="30px"
+                height="30px"
+                viewBox="0 0 50 50"
+                xml:space="preserve"
+              >
+                <image
+                  id="image0"
+                  width="50"
+                  height="50"
+                  x="0"
+                  y="0"
+                  href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
                             AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAB6VBMVEUAAACNcTiVeUKVeUOY
                             fEaafEeUeUSYfEWZfEaykleyklaXe0SWekSZZjOYfEWYe0WXfUWXe0WcgEicfkiXe0SVekSXekSW
                             ekKYe0a9nF67m12ZfUWUeEaXfESVekOdgEmVeUWWekSniU+VeUKVeUOrjFKYfEWliE6WeESZe0GS
@@ -45,9 +88,29 @@ const donnees = ref([
                             S24ra7Tq1cbWjpXV3sHRCb1idXZ0sGdltXNxRateRwHRAACYHutzk/2I5QAAACV0RVh0ZGF0ZTpj
                             cmVhdGUAMjAyMy0wMi0xM1QwODoxNToyOSswMDowMEUnN7UAAAAldEVYdGRhdGU6bW9kaWZ5ADIw
                             MjMtMDItMTNUMDg6MTU6MjkrMDA6MDA0eo8JAAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIzLTAy
-                            LTEzVDA4OjE1OjI5KzAwOjAwY2+u1gAAAABJRU5ErkJggg=="></image>
-                            </svg>
-                            <svg version="1.1" class="contactless" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 50 50" xml:space="preserve">  <image id="image0" width="50" height="50" x="0" y="0" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAQAAAC0NkA6AAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+                            LTEzVDA4OjE1OjI5KzAwOjAwY2+u1gAAAABJRU5ErkJggg=="
+                ></image>
+              </svg>
+              <svg
+                version="1.1"
+                class="contactless"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                width="20px"
+                height="20px"
+                viewBox="0 0 50 50"
+                xml:space="preserve"
+              >
+                <image
+                  id="image0"
+                  width="50"
+                  height="50"
+                  x="0"
+                  y="0"
+                  href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAQAAAC0NkA6AAAABGdBTUEAALGPC/xhBQAAACBjSFJN
                             AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZ
                             cwAACxMAAAsTAQCanBgAAAAHdElNRQfnAg0IEzgIwaKTAAADDklEQVRYw+1XS0iUURQ+f5qPyjQf
                             lGRFEEFK76koKGxRbWyVVLSOgsCgwjZBJJYuKogSIoOonUK4q3U0WVBWFPZYiIE6kuArG3VGzK/F
@@ -66,36 +129,36 @@ const donnees = ref([
                             xDyxm9MmISKCWrzB7bSlaqGlsf0FC0gMjzTg6GgAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjMtMDIt
                             MTNUMDg6MTk6NTYrMDA6MDCjlq7LAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIzLTAyLTEzVDA4OjE5
                             OjU2KzAwOjAw0ssWdwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyMy0wMi0xM1QwODoxOTo1Nisw
-                            MDowMIXeN6gAAAAASUVORK5CYII="></image>
-                            </svg>
-                            <p class="number">{{ item.titre }}</p>
-                        </div>
-                        <div class="flip-card-back">
-                            <div class="strip"></div>                           
-                            <p class="number2">{{ item.info }}</p>                            
-                        </div>
-                    </div>
-                </div>
-            </router-link>
+                            MDowMIXeN6gAAAAASUVORK5CYII="
+                ></image>
+              </svg>
+              <p class="number">{{ item.titre }}</p>
             </div>
-    </section>
+            <div class="flip-card-back">
+              <div class="strip"></div>
+              <p class="number2">{{ item.info }}</p>
+            </div>
+          </div>
+        </div>
+      </router-link>
+    </div>
+  </section>
 </template>
 
 <style scoped>
-
-.nav{
-    text-decoration: none;
-    height: 100%;
+.nav {
+  text-decoration: none;
+  height: 100%;
 }
-.nav:hover{
-    background-color: transparent;
+.nav:hover {
+  background-color: transparent;
 }
-.btns{
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
+.btns {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
 }
 
 /* Style de la carte */
@@ -106,12 +169,12 @@ const donnees = ref([
   height: 154px;
   perspective: 1000px;
   color: white;
-    margin: 20px;
+  margin: 20px;
 }
 
 .heading_8264 {
   position: absolute;
-  letter-spacing: .2em;
+  letter-spacing: 0.2em;
   font-size: 0.5em;
   top: 2em;
   left: 18.6em;
@@ -143,14 +206,13 @@ const donnees = ref([
   left: 1em;
 }
 
-.number2{
+.number2 {
   position: absolute;
   font-weight: bold;
   font-size: 0.8em;
   top: 5em;
   left: 1em;
 }
-
 
 .strip {
   position: absolute;
@@ -167,14 +229,10 @@ const donnees = ref([
   );
 }
 
-
-
-
-
 .code {
   font-weight: bold;
   text-align: center;
-  margin: .2em;
+  margin: 0.2em;
   color: black;
 }
 
@@ -191,8 +249,9 @@ const donnees = ref([
   transform: rotateY(180deg);
 }
 
-.flip-card-front, .flip-card-back {
-  box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+.flip-card-front,
+.flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -205,17 +264,15 @@ const donnees = ref([
 }
 
 .flip-card-front {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 2px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 2px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
   background-color: #171717;
 }
 
 .flip-card-back {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 2px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 2px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
   background-color: #171717;
   transform: rotateY(180deg);
 }
-
-
-
-
 </style>

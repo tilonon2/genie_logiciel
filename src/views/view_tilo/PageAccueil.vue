@@ -19,7 +19,7 @@
                                     <div class="card-image"><img src="../../assets/images_tilo/contacter.png"></div>
                                     <a href="#">
                                         <span>Nous contacter</span>         
-                                    </a>
+                                    </a>            
                                 </li>
                             </routerLink>
                             <li class="card-med" id="serv-board">
@@ -38,23 +38,22 @@
                     </li>
                 </ul>
                 <div id="utility">
-                  <a href="#" class="connexion-link">
+                <router-link to="/login" class="connexion-link">
                     <span class="material-icons-outlined">Connexion</span>
                     <i class="fas fa-sign-in-alt"></i>
-                  </a>
+                </router-link>
                 </div>
-    
             </nav>
         </header>
         <section class="hero">
             <h1>TikTak, où chaque tic-tac rapproche talent et opportunité. Trouvez ou recrutez en un instant!</h1>
             <div class="btn-group">
                     <button class="btn-filled-dark">
-                        <a href="">Nous contacter</a>
+                        <router-link to="/nous-contacter">Nous contacter</router-link>
                     </button>
                 
                   <button class="btn-filled-dark">
-                        <a href="">Voir les appels d'offre</a>
+                        <router-link to="/appel_offre_candidat">Voir les appels d'offre</router-link>
                   </button>
             </div>
         </section>
@@ -68,7 +67,7 @@
                     <ul>
                         Nous contacter<span class="subtitle">Contacter nous en tant qu'entreprise pour vous inscrire et ensuite pouvoir poster des appels d'offre.</span>
                         <button class="btn-filled-light">
-                        <a href="">Nous contacter</a>
+                            <router-link to="/nous-contacter">Nous contacter</router-link>  
                         </button>
     
                     </ul>
@@ -80,7 +79,7 @@
                     <ul>
                         Appels d'offre<span class="subtitle">Explorer les appels d'offre actuels est une démarche stratégique pour les particuliers désireux de saisir de nouvelles opportunités.</span>
                         <button class="btn-filled-light">
-                            <a href="">Nous contacter</a>
+                            <router-link to="/appel_offre_candidat">Voir les appels d'offre</router-link>
                         </button>
                     </ul>
     
@@ -155,31 +154,10 @@ import { RouterLink } from 'vue-router';
     
     </script>
     
-    <style scoped>
-    .tableau{
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+    <style >
+
+    @import url('../../assets/variables.css');
     
-    :root {
-        --text-01: #45413E;
-        --light-01: #F9F9F9;
-        --light-02: #FFFFFF;
-        --brand-01: #C9B649;
-        --brand-02: #F2EED1;
-        --card-hover: 0px 4px 24px rgba(0, 0, 0, 0.15);
-        --card-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
-        --hover-timing: all 0.2s ease;
-        --nav-card-size: 240px;
-    
-        -webkit-font-smoothing: antialiased;
-        font-smoothing: antialiased;
-        scroll-behavior: smooth;
-    
-    
-    }
     
     * {
         box-sizing: border-box;
@@ -195,8 +173,7 @@ import { RouterLink } from 'vue-router';
         background: var(--light-01);
         
         width: 100vw;
-        overflow-x: hidden;
-    
+        overflow-x: hidden;    
     }
     
     
@@ -228,6 +205,12 @@ import { RouterLink } from 'vue-router';
     .connexion-link:hover .fas {
       transform: scale(1.2); /* Agrandit l'icône au survol */
     }
+    
+    
+    
+    
+    
+    
     
     
     header {
@@ -438,6 +421,9 @@ import { RouterLink } from 'vue-router';
         line-height: 1.2;
     }
     
+    
+    
+    
     .card-large > ul {
         /*    padding: 16px 0 24px;*/
         display: flex;
@@ -453,6 +439,7 @@ import { RouterLink } from 'vue-router';
         font-weight: 600;
         line-height: 1.5;
     }
+    
     
     
     .card-large > ul > li a {
@@ -1107,6 +1094,7 @@ import { RouterLink } from 'vue-router';
         }
     
     }
+
     
     
     

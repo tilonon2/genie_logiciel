@@ -1,97 +1,116 @@
 <template>
-    <div class="navbar">
-        <div class="logo">
-            <img src="../../../assets/images_yeo/logo.jpeg" alt="">
-        </div>
-        <div class="menu1">
-            <router-link class="nav" to="/tableau_bord/tableau_bord/dashboard">
-                <button class="btn">
-                    <font-awesome-icon class="icons" icon="tachometer" />
-                    <span class="text">Tableau de bord</span>
-                </button>
-            </router-link>
-            <router-link class="nav" to="/tableau_bord/tableau_bord">
-                <button class="btn">
-                    <font-awesome-icon class="icons" icon="envelope" />
-                    <span class="text">Messagerie</span>
-                    <p class="notif">05</p>
-                </button>
-            </router-link>
-        </div>
-        <div class="menu2">
-            <div class="titre">
-                <font-awesome-icon class="icon2" icon="th" />
-                <p class="titre">Menu</p>
-            </div>
-            
-            <div class="menu2_btn">
-                <div v-for="(item, index) in gestions" :key="index" class="gestion">
-                    <span class="tooltip">{{ item.name }} </span>
-                    <router-link :to="item.chemin" class="nav">
-                        <font-awesome-icon class="icon" :icon="item.icon" />
-                    </router-link>
-                </div>
-            </div>
-        </div>
+  <div class="navbar">
+    <div class="logo">
+      <img src="../../../assets/images_yeo/logo.jpeg" alt="" />
     </div>
+    <div class="menu1">
+      <router-link class="nav" to="/tableau_bord/dashboard">
+        <button class="btn">
+          <font-awesome-icon class="icons" icon="tachometer" />
+          <span class="text">Tableau de bord</span>
+        </button>
+      </router-link>
+      <router-link class="nav" to="/tableau_bord">
+        <button class="btn">
+          <font-awesome-icon class="icons" icon="envelope" />
+          <span class="text">Messagerie</span>
+          <p class="notif">05</p>
+        </button>
+      </router-link>
+    </div>
+    <div class="menu2">
+      <div class="titre">
+        <font-awesome-icon class="icon2" icon="th" />
+        <p class="titre">Menu</p>
+      </div>
+
+      <div class="menu2_btn">
+        <div v-for="(item, index) in gestions" :key="index" class="gestion">
+          <span class="tooltip">{{ item.name }} </span>
+          <router-link :to="item.chemin" class="nav">
+            <font-awesome-icon class="icon" :icon="item.icon" />
+          </router-link>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from "vue";
 
-    const gestions = ref([
-        {icon: 'user-plus', chemin: '/tableau_bord/tableau_bord/clients', name: 'Clients'},
-        {icon: 'pencil-square', chemin: '/tableau_bord/tableau_bord/edtions', name: 'editions'},
-        {icon: 'graduation-cap', chemin: '/tableau_bord/tableau_bord/tests',name: 'tests'},
-        {icon: 'fa-cloud', chemin: '/tableau_bord/tableau_bord/sauvegardes_Restauration',name: 'Sauvegardes'},
-        {icon: 'fa-briefcase', chemin: '/tableau_bord/tableau_bord/ecran2', name: 'personnels'},
-        {icon: 'fa-users', chemin: '/tableau_bord/tableau_bord/candidats', name: 'Candidats'},
-        {icon: 'fa-eye', chemin: '/tableau_bord/tableau_bord/piste_audit', name: "Piste d'audit"},
-        {icon: 'fa-credit-card', chemin: '/tableau_bord/tableau_bord/comptabilite', name: 'Comptabilité'},
-        {icon: 'fa-cog', chemin: '/tableau_bord/tableau_bord/comptabilite', name: 'Paramètres'},
-    ]);
-
+const gestions = ref([
+  { icon: "user-plus", chemin: "/tableau_bord/clients", name: "Clients" },
+  {
+    icon: "pencil-square",
+    chemin: "/tableau_bord/editions",
+    name: "editions",
+  },
+  { icon: "graduation-cap", chemin: "/tableau_bord/test", name: "tests" },
+  {
+    icon: "fa-cloud",
+    chemin: "/tableau_bord/sauvegardes_restaurations",
+    name: "Sauvegardes",
+  },
+  {
+    icon: "fa-briefcase",
+    chemin: "/tableau_bord/personnel",
+    name: "personnels",
+  },
+  { icon: "fa-users", chemin: "/tableau_bord/candidat", name: "Candidats" },
+  {
+    icon: "fa-eye",
+    chemin: "/tableau_bord/piste_audit",
+    name: "Piste d'audit",
+  },
+  {
+    icon: "fa-credit-card",
+    chemin: "/tableau_bord/comptabilite",
+    name: "Comptabilité",
+  },
+  { icon: "fa-cog", chemin: "/tableau_bord/parametre", name: "Paramètres" },
+]);
 </script>
 
 <style scoped>
-
-.navbar{
-    height: 100%;
-    width: 100%;
-    background-color: black;
-    border-radius: 20px;
-    padding-top: 0;
-    overflow-x: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+.navbar {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  border-radius: 20px;
+  padding-top: 0;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
-.navbar .logo{
-    width: 100%;
-    padding: 0;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    border-bottom: solid 1px #C3B649;
+.navbar .logo {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: solid 1px #c3b649;
 }
 
-
-.logo img{
-    height: 50px;
-    width: 120px;
-    border-radius: 50px;
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+.logo img {
+  height: 50px;
+  width: 120px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 /* nouveau btn */
 
-.menu1{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.menu1 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .btn {
   border: none;
@@ -102,28 +121,27 @@ import { ref } from 'vue';
   justify-content: space-around;
   align-items: center;
   gap: 12px;
-  background: #1C1A1C;
+  background: #1c1a1c;
   cursor: pointer;
   transition: all 450ms ease-in-out;
 }
 
 .sparkle {
-  fill: #AAAAAA;
+  fill: #aaaaaa;
   transition: all 800ms ease;
 }
 
 .text {
   font-weight: 600;
-  color: #F2EED1;
+  color: #f2eed1;
   font-size: medium;
 }
 
 .btn:hover {
-  background: linear-gradient(0deg,#C3B649,#fff59b);
+  background: linear-gradient(0deg, #c3b649, #fff59b);
   box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
-  inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
-  0px 0px 0px 4px rgba(255, 255, 255, 0.2),
-  0px 0px 180px 0px #F2EED1;
+    inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 4px rgba(255, 255, 255, 0.2),
+    0px 0px 180px 0px #f2eed1;
   transform: translateY(-2px);
 }
 
@@ -134,71 +152,70 @@ import { ref } from 'vue';
 .btn:hover .sparkle {
   fill: white;
   transform: scale(1.2);
-} 
-
-.btn:hover .icon{
-    color: #F2EED1;
 }
 
-.btn p{
-    font-weight: 900;
-    font-size: 0.9em;
-}
-.btn .notif{
-    background-color: #C3B649;
-    padding: 5px;
-    border-radius: 10px;
+.btn:hover .icon {
+  color: #f2eed1;
 }
 
-.icon{
-    color: black;
-    height: 25px;
-    width: 25px;
+.btn p {
+  font-weight: 900;
+  font-size: 0.9em;
 }
-.icons{
-    color: rgba(255, 255, 255, 0.635);
-    height: 25px;
-    width: 25px;
+.btn .notif {
+  background-color: #c3b649;
+  padding: 5px;
+  border-radius: 10px;
 }
 
+.icon {
+  color: black;
+  height: 25px;
+  width: 25px;
+}
+.icons {
+  color: rgba(255, 255, 255, 0.635);
+  height: 25px;
+  width: 25px;
+}
 
 /* Menu 2 */
-.menu2{
-    margin-top: 10px;
+.menu2 {
+  margin-top: 10px;
 }
 
-.titre{
-    display: flex;
-    font-size: 25px;
-    font-weight: 800;
+.titre {
+  display: flex;
+  font-size: 25px;
+  font-weight: 800;
 }
-.icon2{
-    color: rgb(255, 255, 255);
-    height: 25px;
-    width: 25px;
-    margin: 0 10px 10px 10px;
+.icon2 {
+  color: rgb(255, 255, 255);
+  height: 25px;
+  width: 25px;
+  margin: 0 10px 10px 10px;
 }
-.menu2_btn{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.menu2_btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
-.gestion{
-    background-color: white;
-    width: 22%;
-    margin: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    padding-bottom: 13px ;
-    padding-top: 13px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
+.gestion {
+  background-color: white;
+  width: 22%;
+  margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  padding-bottom: 13px;
+  padding-top: 13px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
 }
 
 .tooltip {
@@ -232,12 +249,10 @@ import { ref } from 'vue';
   transform: translate(-50%, -5px);
 }
 
-.gestion:hover{
-    background-color: #C3B649;
-    box-shadow: 0 0 0 5px #F2EED1;
+.gestion:hover {
+  background-color: #c3b649;
+  box-shadow: 0 0 0 5px #f2eed1;
 }
-
-
 
 /* barre de scrool */
 
@@ -245,17 +260,13 @@ import { ref } from 'vue';
   display: none;
 }
 
-.nav{
-    text-decoration: none;
+.nav {
+  text-decoration: none;
 }
 
-.nav:hover{
-    background-color: transparent;
+.nav:hover {
+  background-color: transparent;
 }
-
 
 /* hover menu */
-
-
-
 </style>

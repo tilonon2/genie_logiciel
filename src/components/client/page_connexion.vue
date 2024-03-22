@@ -9,7 +9,7 @@
             <nav>
                   
                 <div id="logo">
-                  <img src="../src/assets/logotiktak.jpeg" alt="Logo de lapplication web" width="80" height="40"/>
+                  <img src="../../assets/images_tilo/logotiktak.jpeg" alt="Logo de lapplication web" width="80" height="40"/>
                 </div>
                 <ul class="navigation-menu">
     

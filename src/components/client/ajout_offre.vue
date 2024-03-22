@@ -108,6 +108,17 @@
             <option value="" class="text-black-50">competence 1</option>
             <option value="" class="text-black-50">competence 2</option>
         </select>
+
+        <div class="form-floating mb-3">
+        <select name="" id="" class="form-control shadow-none border-danger">
+            <option value="">Selectionner un Poste</option>
+            <option value="" class="text-black-50">poste 1</option>
+            <option value="" class="text-black-50">poste 2</option>
+        </select>
+
+        <label for="" class="text-black-50" >Domaine</label>
+
+        </div>
         <label for="" class="text-black-50">Domaine</label>
 
         </div>

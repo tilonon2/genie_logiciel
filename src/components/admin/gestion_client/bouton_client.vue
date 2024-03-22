@@ -1,67 +1,68 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const donnees = ref([
-        {titre: 'GESTION DES CLIENTS', chemin:'/gestion_clients', info: 
-        'Ici vous pourrez ajouter, modifier et supprimmer les informations liées aux clients'},
-        {titre: "APPELS D'OFFRES", chemin:'/appel_offre' , info: 
-        "Ici vous pourrez valider la publication des appels d'offres et aussi vous pourrez ajouter, modifier et supprimmer les informations liées aux appels d'offres"},
+  {
+    titre: "GESTION DES CLIENTS",
+    chemin: "/tableau_bord/gestion_clients",
+    info:
+      "Ici vous pourrez ajouter, modifier et supprimmer les informations liées aux clients",
+  },
+  {
+    titre: "APPELS D'OFFRES",
+    chemin: "/tableau_bord/appel_offre",
+    info:
+      "Ici vous pourrez valider la publication des appels d'offres et aussi vous pourrez ajouter, modifier et supprimmer les informations liées aux appels d'offres",
+  },
 ]);
-
 </script>
 <template>
-    <section class="btns">
-        <div class="card" v-for="(item, index) in donnees" :key="index">
-            <router-link :to="item.chemin" class="nav">
-                <div class="content">
-                <div class="back">
-                <div class="back-content">
-                    <strong>{{ item.titre }}</strong>
-                </div>
-                </div>
-                <div class="front">
-                <div class="img">
-                    <div class="circle">
-                    </div>
-                    <div class="circle" id="right">
-                    </div>
-                    <div class="circle" id="bottom">
-                    </div>
-                </div>
+  <section class="btns">
+    <div class="card" v-for="(item, index) in donnees" :key="index">
+      <router-link :to="item.chemin" class="nav">
+        <div class="content">
+          <div class="back">
+            <div class="back-content">
+              <strong>{{ item.titre }}</strong>
+            </div>
+          </div>
+          <div class="front">
+            <div class="img">
+              <div class="circle"></div>
+              <div class="circle" id="right"></div>
+              <div class="circle" id="bottom"></div>
+            </div>
 
-                <div class="front-content">
-                    
-                    <div class="description">
-                    <div class="titles">
-                        <p class="titles">
-                        <strong>{{item.info}}</strong>
-                        </p>
-                    </div>
-                    
-                    </div>
+            <div class="front-content">
+              <div class="description">
+                <div class="titles">
+                  <p class="titles">
+                    <strong>{{ item.info }}</strong>
+                  </p>
                 </div>
-                </div>
+              </div>
             </div>
-            </router-link>
-            </div>
-    </section>
+          </div>
+        </div>
+      </router-link>
+    </div>
+  </section>
 </template>
 
 <style scoped>
-
-.nav{
-    text-decoration: none;
-    height: 100%;
+.nav {
+  text-decoration: none;
+  height: 100%;
 }
-.nav:hover{
-    background-color: transparent;
+.nav:hover {
+  background-color: transparent;
 }
-.btns{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.btns {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 /* card 2 */
 
@@ -80,11 +81,12 @@ const donnees = ref([
   transition: transform 300ms;
   box-shadow: 0px 0px 10px 1px #000000ee;
   border-radius: 5px;
-  background-color: #C3B649;
+  background-color: #c3b649;
 }
 
-.front, .back {
-  background-color: #C3B649;
+.front,
+.back {
+  background-color: #c3b649;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -105,11 +107,19 @@ const donnees = ref([
 
 .back::before {
   position: absolute;
-  content: ' ';
+  content: " ";
   display: block;
   width: 160px;
   height: 160%;
-  background: linear-gradient(90deg, transparent, #C3B649, #C3B649, #F2EED1, #F2EED1, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #c3b649,
+    #c3b649,
+    #f2eed1,
+    #f2eed1,
+    transparent
+  );
   animation: rotation_481 5000ms infinite linear;
 }
 
@@ -202,14 +212,14 @@ const donnees = ref([
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background-color: #F2EED1;
+  background-color: #f2eed1;
   position: relative;
   filter: blur(15px);
   animation: floating 2600ms infinite linear;
 }
 
 #bottom {
-  background-color: #F2EED1;
+  background-color: #f2eed1;
   left: 50px;
   top: 0px;
   width: 150px;
@@ -218,7 +228,7 @@ const donnees = ref([
 }
 
 #right {
-  background-color: #C3B649;
+  background-color: #c3b649;
   left: 160px;
   top: -80px;
   width: 30px;
@@ -239,7 +249,4 @@ const donnees = ref([
     transform: translateY(0px);
   }
 }
-
-
-
 </style>

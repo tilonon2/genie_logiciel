@@ -1,298 +1,379 @@
 <script lang="ts" setup>
-import { ref, reactive, watch, computed } from 'vue';
+import { ref, reactive, watch, onMounted } from "vue";
+import axios from "axios";
+
 const montrer = ref<boolean>(false);
-  const formulaire = ref<boolean>(false);
-
-const filtrer = () =>{
-  montrer.value = !montrer.value
-}
-
-// fermer le formulaire
-// const fermer = () =>{
-//   formulaire.value = false
-// }
+const formulaire = ref<boolean>(false);
+const filtrer = () => {
+  montrer.value = !montrer.value;
+};
 
 // ouvrir et fermer le formualire
-const filtrer_form = () =>{
-  formulaire.value = !formulaire.value
-}
+const filtrer_form = () => {
+  formulaire.value = !formulaire.value;
+};
 
-  const hasErrors=ref(true);
-  // Les erreurs
+const hasErrors = ref(true);
+// Les erreurs
 
-  const formData = reactive({
-      name: '',
-      age:18 as number,
-      email: '',
-      password: '',
-      confirmPassword: '',
-      poste:'',
-      typeContrat:''
-    });
+const formData = reactive({
+  name: "",
+  age: 18 as number,
+  email: "",
+  password: "",
+  confirmPassword: "",
+  poste: "",
+  typeContrat: "",
+});
 
-  // le grand tableau
+// le grand tableau
 
-  const input = ref<string>('');
+const input = ref<string>("");
 
-  const tableau  = ref([
-  { nom_prenoms: 'Yeo', email: 'yeo@gmail.com', poste: 'Directeur', niveau_acces: 'niveau 1', salaire: 500000, type_contrat: 'CDD' },
-  { nom_prenoms: 'John Doe', email: 'john.doe@example.com', poste: 'Développeur', niveau_acces: 'niveau 2', salaire: 60000, type_contrat: 'CDI' },
-  { nom_prenoms: 'Jane Doe', email: 'jane.doe@example.com', poste: 'Designer', niveau_acces: 'niveau 3', salaire: 70000, type_contrat: 'CDI' }
+const tableau = ref([
+  {
+    nom_prenoms: "Yeo",
+    email: "yeo@gmail.com",
+    poste: "Directeur",
+    niveau_acces: "niveau 1",
+    salaire: 500000,
+    type_contrat: "CDD",
+  },
+  {
+    nom_prenoms: "John Doe",
+    email: "john.doe@example.com",
+    poste: "Développeur",
+    niveau_acces: "niveau 2",
+    salaire: 60000,
+    type_contrat: "CDI",
+  },
+  {
+    nom_prenoms: "Jane Doe",
+    email: "jane.doe@example.com",
+    poste: "Designer",
+    niveau_acces: "niveau 3",
+    salaire: 70000,
+    type_contrat: "CDI",
+  },
+]);
 
-  ])
-
-  // la recherhce dans ce tableau
-  const recherche = ref('');
+// la recherhce dans ce tableau
+const recherche = ref("");
 
 // Filtrer les utilisateurs en fonction de la recherche
 const originalTableau = ref(tableau);
 
 // La recherche dans ce tableau
-watch(recherche, nouvelle_valeur => {
-  if (nouvelle_valeur !== undefined) { // Vérification si nouvelle_valeur est définie
-    tableau.value = originalTableau.value.filter((utilisateur: { nom_prenoms: string; email: string; salaire: { toString: () => string|string[]; }; type_contrat: string; }) => {
-      return (
-        utilisateur.nom_prenoms.toLowerCase().includes(nouvelle_valeur.toLowerCase()) ||
-        utilisateur.email.toLowerCase().includes(nouvelle_valeur.toLowerCase()) ||
-        utilisateur.salaire.toString().includes(nouvelle_valeur.toLowerCase()) || // Convertir en chaîne pour la comparaison
-        utilisateur.type_contrat.toLowerCase().includes(nouvelle_valeur.toLowerCase())
-      );
-    });
+watch(recherche, (nouvelle_valeur) => {
+  if (nouvelle_valeur !== undefined) {
+    // Vérification si nouvelle_valeur est définie
+    tableau.value = originalTableau.value.filter(
+      (utilisateur: {
+        nom_prenoms: string;
+        email: string;
+        salaire: { toString: () => string | string[] };
+        type_contrat: string;
+      }) => {
+        return (
+          utilisateur.nom_prenoms.toLowerCase().includes(nouvelle_valeur.toLowerCase()) ||
+          utilisateur.email.toLowerCase().includes(nouvelle_valeur.toLowerCase()) ||
+          utilisateur.salaire.toString().includes(nouvelle_valeur.toLowerCase()) || // Convertir en chaîne pour la comparaison
+          utilisateur.type_contrat.toLowerCase().includes(nouvelle_valeur.toLowerCase())
+        );
+      }
+    );
   }
 });
 
 //  les erreurs d'enregistrements
-  const errors = ref([]);
+const errors = ref([]);
 
-  const validateForm = () => {
-    errors.value = [];
+const validateForm = () => {
+  errors.value = [];
 
-      // Validation des champs
-      if (formData.password.length < 8) {
-        errors.value.push('Le mot de passe doit contenir au moins 8 caractères.');
-      }
+  // Validation des champs
+  if (formData.password.length < 8) {
+    errors.value.push("Le mot de passe doit contenir au moins 8 caractères.");
+  }
 
-      if (formData.password !== formData.confirmPassword) {
-        errors.value.push('Les mots de passe ne correspondent pas.');
-      }
+  if (formData.password !== formData.confirmPassword) {
+    errors.value.push("Les mots de passe ne correspondent pas.");
+  }
 
-      if (formData.age <18 || formData.age >65) {
-        errors.value.push('Les mots de passe ne correspondent pas.');
-      }
+  if (formData.age < 18 || formData.age > 65) {
+    errors.value.push("Les mots de passe ne correspondent pas.");
+  }
 
-      
+  // Ajouter d'autres validations selon vos besoins
 
-      // Ajouter d'autres validations selon vos besoins
+  return errors.value.length === 0;
+};
 
-      return errors.value.length === 0;
-    };
+const handleSubmit = () => {
+  if (validateForm()) {
+    // Soumettre le formulaire
+    alert("Formulaire soumis avec succès");
+    formulaire.value = false;
+  }
+};
 
-    const handleSubmit = () => {
-      if (validateForm()) {
-        // Soumettre le formulaire
-        alert('Formulaire soumis avec succès')
-        formulaire.value = false
-      }
-    };
+//-------------------- BACKEND--------------------
 
+const Candidats = ref([]);
+onMounted(() => {
+  axios
+    .get("http://localhost/genie_logiciel-main/backend/backend_yeo/api.php")
+    .then((res) => {
+      Candidats.value = res.data;
+      // profile.users = res.data;
+      console.log(res.data);
+    })
+    .catch((error) => {
+      console.error(
+        "Une erreur s'est produite lors de la récupération des données :",
+        error
+      );
+    });
+});
 </script>
 <template>
-    <p class="title">Candidats</p>
-    <section class="formulaires" v-if="formulaire">
-      <div class="fermer">
-        <button @click="filtrer_form">Fermer</button>
-      </div>
-      <form class="formulaire" @submit.prevent="handleSubmit">
-          <div class="slides">
-              <div class="flex">
-                <label>
-                    <input required placeholder=""  type="text" class="input">
-                    <span>Identifiant</span>
-                </label>
-              
-                <label>
-                    <input required v-model="formData.name" placeholder="" type="text" class="input">
-                    <span>Nom et Prenoms</span>
-                </label>
-    
-            </div>
-            <div class="flex">
-                <label>
-                    <input required  placeholder="" type="tel" class="input">
-                    <span>Telephone</span>
-                </label>
-              
-                <label>
-                    <input required placeholder="" type="text" class="input">
-                    <span>Adresse</span>
-                </label>   
-                
-            </div>
-            <div class="flex">
-                <label>
-                    <input required v-model="formData.name" placeholder="" type="date" class="input">
-                    <span>Date de naissance</span>
-                </label>
-                <label>
-                    <input required placeholder="" v-model="formData.email" type="text" class="input">
-                    <span>Lieu de naissance</span>
-            </label> 
-                
-            </div>
-
- 
-            <label>
-                <input required placeholder="" v-model="formData.email" type="email" class="input">
-                <span>Email</span>
-            </label> 
-            <label>
-                    <input required  placeholder="" type="file" class="input">
-            </label>   
-            <label>
-                <input required v-model="formData.password" placeholder="" type="password" class="input">
-                <span>Mot de passe</span>
-            </label>
-            <label>
-                <input required placeholder="" v-model="formData.confirmPassword" type="password" class="input">
-                <span>Confirmer le mot de passe</span>
-            </label>
-
-            <div class="flex">
-              <label>               
-                    <select required name="" id="" v-model="formData.poste">
-                      <option value="Comptable">Comptable</option>
-                      <option value="Admin">Admin</option>
-                      <option value="Gestionnaire">Gestionnaire</option>
-                    </select>
-              </label>
-
-              <label>               
-                    <select required name="" id="" >
-                      <option value="Comptable">Masculin</option>
-                      <option value="Admin">Feminin</option>
-                    </select>
-              </label>
-
-            </div>
-
-            <div class="flex">
-              <label>               
-                    <select required name="" id="">
-                      <option value="ivoirienne">Ivoirienne </option>
-                      <option value="Senegalaise">Senegalaise</option>
-                      <option value="Maliene">Maliene</option>
-                    </select>
-              </label>
-
-              <label>               
-                    <select required name="" id="" >
-                      <option value="Doctorat">Doctorat</option>
-                      <option value="Master">Master</option>
-                      <option value="Licence">Licence</option>
-                      <option value="bac">BAC</option>
-                      
-                    </select>                   
-              </label>
-
-              <label>               
-                    <select required name="" id="" v-model="formData.typeContrat">
-                      <option value="université de cocody">Université de cocody</option>
-                      <option value="université de korohgo">université de korohgo</option>
-                    </select>
-              </label>
-            </div>  
-
-          </div>
-          
-        <button class="submit">Submit</button>
-    </form>
-    <div class="error-box" v-if="errors">        
-            <ul v-if="hasErrors">
-              <li v-for="error in errors" :key="error">{{ error }}</li>
-            </ul>
+  <p class="title">Candidats</p>
+  <section class="formulaires" v-if="formulaire">
+    <div class="fermer">
+      <button @click="filtrer_form">Fermer</button>
     </div>
-    </section>
-    <form class="form" v-if="montrer">
-            <label for="salaire">Salaire</label>
-            <input id="salaire" type="radio" name="r" value="1" checked="true">
-            <label for="nom">Nom</label>
-            <input id="nom" type="radio" name="r" value="2">
-            <label for="poste">Poste</label>
-            <input id="poste" type="radio" name="r" value="3">
+    <form class="formulaire" @submit.prevent="handleSubmit">
+      <div class="slides">
+        <div class="flex">
+          <label>
+            <input required placeholder="" type="text" class="input" />
+            <span>Identifiant</span>
+          </label>
+
+          <label>
+            <input required placeholder="" type="text" class="input" />
+            <span>Nom et Prenoms</span>
+          </label>
+        </div>
+        <div class="flex">
+          <label>
+            <input required placeholder="" type="tel" class="input" />
+            <span>Telephone</span>
+          </label>
+
+          <label>
+            <input required placeholder="" type="text" class="input" />
+            <span>Adresse</span>
+          </label>
+        </div>
+        <div class="flex">
+          <label>
+            <input
+              required
+              v-model="formData.name"
+              placeholder=""
+              type="date"
+              class="input"
+            />
+            <span>Date de naissance</span>
+          </label>
+          <label>
+            <input
+              required
+              placeholder=""
+              v-model="formData.email"
+              type="text"
+              class="input"
+            />
+            <span>Lieu de naissance</span>
+          </label>
+        </div>
+
+        <label>
+          <input
+            required
+            placeholder=""
+            v-model="formData.email"
+            type="email"
+            class="input"
+          />
+          <span>Email</span>
+        </label>
+        <label>
+          <input required placeholder="" type="file" class="input" />
+        </label>
+        <label>
+          <input
+            required
+            v-model="formData.password"
+            placeholder=""
+            type="password"
+            class="input"
+          />
+          <span>Mot de passe</span>
+        </label>
+        <label>
+          <input
+            required
+            placeholder=""
+            v-model="formData.confirmPassword"
+            type="password"
+            class="input"
+          />
+          <span>Confirmer le mot de passe</span>
+        </label>
+
+        <div class="flex">
+          <label>
+            <select required name="" id="" v-model="formData.poste">
+              <option value="Comptable">Comptable</option>
+              <option value="Admin">Admin</option>
+              <option value="Gestionnaire">Gestionnaire</option>
+            </select>
+          </label>
+
+          <label>
+            <select required name="" id="">
+              <option value="Comptable">Masculin</option>
+              <option value="Admin">Feminin</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="flex">
+          <label>
+            <select required name="" id="">
+              <option value="ivoirienne">Ivoirienne</option>
+              <option value="Senegalaise">Senegalaise</option>
+              <option value="Maliene">Maliene</option>
+            </select>
+          </label>
+
+          <label>
+            <select required name="" id="">
+              <option value="Doctorat">Doctorat</option>
+              <option value="Master">Master</option>
+              <option value="Licence">Licence</option>
+              <option value="bac">BAC</option>
+            </select>
+          </label>
+
+          <label>
+            <select required name="" id="" v-model="formData.typeContrat">
+              <option value="université de cocody">Université de cocody</option>
+              <option value="université de korohgo">université de korohgo</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <button class="submit">Submit</button>
     </form>
-    <section class="option">
-      <div class="filtre">
-        <button @click="filtrer"  title="filter" class="filter">
-          <svg viewBox="0 0 512 512" height="1em">
-            <path
-              d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"
-            ></path>
-          </svg>
-        </button>
-        
-      </div>
-      <div class="filtre">
-        <button type="button" class="button" @click="filtrer_form">
-          <span class="button__text">Ajouter</span>
-          <span class="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
-        </button>
-      </div>
+    <div class="error-box" v-if="errors">
+      <ul v-if="hasErrors">
+        <li v-for="error in errors" :key="error">{{ error }}</li>
+      </ul>
+    </div>
+  </section>
+  <form class="form" v-if="montrer">
+    <label for="salaire">Salaire</label>
+    <input id="salaire" type="radio" name="r" value="1" checked="true" />
+    <label for="nom">Nom</label>
+    <input id="nom" type="radio" name="r" value="2" />
+    <label for="poste">Poste</label>
+    <input id="poste" type="radio" name="r" value="3" />
+  </form>
+  <section class="option">
+    <div class="filtre">
+      <button @click="filtrer" title="filter" class="filter">
+        <svg viewBox="0 0 512 512" height="1em">
+          <path
+            d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div class="filtre">
+      <button type="button" class="button" @click="filtrer_form">
+        <span class="button__text">Ajouter</span>
+        <span class="button__icon"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke="currentColor"
+            height="24"
+            fill="none"
+            class="svg"
+          >
+            <line y2="19" y1="5" x2="12" x1="12"></line>
+            <line y2="12" y1="12" x2="19" x1="5"></line></svg
+        ></span>
+      </button>
+    </div>
 
-      <div class="group">
-          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
-          <input placeholder="Search" v-model="recherche" type="search" class="input">
-      </div>
-    </section>
-    <section class="droit">
-        <table>
-          <thead>
-              <tr>
-                <th>Image</th>
-                  <th>Nom et Prenoms</th>
-                  <th>Email</th>
-                  <th>Specialité</th>
-                  <th>Diplome</th>
-                  <th>Université</th>
-                  <th>niveau d'accès</th>
-                  <th>Salaire</th>
-                  <th>Action</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <tr v-for="(ligne, index) in tableau" :key="index">
-                  <td class="">
-                    <img src="../../../assets/images/profile.png" class="profile">
-                  </td>                
-                  <td>Yeo</td>                
-                  <td class="">{{ligne.poste}}</td>   
-                  <td class="">{{ligne.niveau_acces}}</td>
-                  <td class="">{{ligne.salaire}}</td> 
-                  <td class="">{{ligne.poste}}</td>   
-                  <td class="">{{ligne.niveau_acces}}</td>   
-                  <td class="">{{ligne.type_contrat}}</td>  
-                  <td>
-                      <div class="boutons">
-                        <button class="edit-button">
-                          <svg viewBox="0 0 448 512" class="edit-svgIcon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
-                        </button>
-                        <button class="edit-button">
-                          <svg class="edit-svgIcon" viewBox="0 0 512 512">
-                            <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path>
-                          </svg>
-                        </button>
-                      </div>
-                  </td> 
-              </tr>
-
-              
-          </tbody>
-          </table>
-    </section>
+    <div class="group">
+      <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+        <g>
+          <path
+            d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"
+          ></path>
+        </g>
+      </svg>
+      <input placeholder="Search" v-model="recherche" type="search" class="input" />
+    </div>
+  </section>
+  <section class="droit">
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Nom et Prenoms</th>
+          <th>Email</th>
+          <th>Specialité</th>
+          <th>Diplome</th>
+          <th>Université</th>
+          <th>niveau d'accès</th>
+          <th>Salaire</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="candidat in Candidats" :key="candidat.id_candidat">
+          <td class="">
+            <img src="../../../assets/images/profile.png" class="profile" />
+          </td>
+          <td class="">{{ candidat.mot_de_passe_candidat }}</td>
+          <td class="">{{ candidat.numero_candidat }}</td>
+          <td>
+            <div class="boutons">
+              <button class="edit-button">
+                <svg viewBox="0 0 448 512" class="edit-svgIcon">
+                  <path
+                    d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                  ></path>
+                </svg>
+              </button>
+              <button class="edit-button">
+                <svg class="edit-svgIcon" viewBox="0 0 512 512">
+                  <path
+                    d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 </template>
 
 <style scoped>
-.formulaires{
+.formulaires {
   text-align: center;
   width: 100%;
   flex-direction: column;
@@ -302,27 +383,27 @@ watch(recherche, nouvelle_valeur => {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;  
+  width: 100%;
   height: 100%;
   z-index: 1;
   background: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
-.form{
-    width: 100%;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
+.form {
+  width: 100%;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
 }
-.option{
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.option {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .title {
   font-size: 28px;
@@ -333,10 +414,11 @@ watch(recherche, nouvelle_valeur => {
   display: flex;
   align-items: center;
   padding-left: 30px;
-  margin-left: 10px ;
+  margin-left: 10px;
 }
 
-.title::before,.title::after {
+.title::before,
+.title::after {
   position: absolute;
   content: "";
   height: 16px;
@@ -371,33 +453,33 @@ watch(recherche, nouvelle_valeur => {
 }
 
 table {
-        width: 100%;
-        border-collapse: collapse;
-        overflow: auto;
-    }
-    th, td {
-        padding: 10px;
-        border: 1px solid #ddd;
-        text-align: center;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-    tr:hover {
-        background-color: #5b5b5b5a;
-    }
-    /* Styles spécifiques */
-    .poste {
-        font-weight: bold;
-    }
-    .allowed {
-        background-color: #c6efce;
-    }
-    .denied {
-        background-color: #ffc7ce;
-    }
+  width: 100%;
+  border-collapse: collapse;
+  overflow: auto;
+}
+th,
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+th {
+  background-color: #f2f2f2;
+}
+tr:hover {
+  background-color: #5b5b5b5a;
+}
+/* Styles spécifiques */
+.poste {
+  font-weight: bold;
+}
+.allowed {
+  background-color: #c6efce;
+}
+.denied {
+  background-color: #ffc7ce;
+}
 
-   
 /* Bouton ajouter */
 
 .button {
@@ -411,7 +493,9 @@ table {
   background-color: black;
 }
 
-.button, .button__icon, .button__text {
+.button,
+.button__icon,
+.button__text {
   transition: all 0.3s;
 }
 
@@ -438,8 +522,6 @@ table {
   stroke: #fff;
 }
 
-
-
 .button:hover .button__text {
   color: transparent;
 }
@@ -452,58 +534,59 @@ table {
 /* bouton de recherche */
 
 .group {
- display: flex;
- line-height: 28px;
- align-items: center;
- position: relative;
- max-width: 190px;
+  display: flex;
+  line-height: 28px;
+  align-items: center;
+  position: relative;
+  max-width: 190px;
 }
 
 .input {
- width: 100%;
- height: 40px;
- line-height: 28px;
- padding: 0 1rem;
- padding-left: 2.5rem;
- border: 2px solid transparent;
- border-radius: 8px;
- outline: none;
- background-color: var(--color1);
- color: #0d0c22;
- transition: .3s ease;
+  width: 100%;
+  height: 40px;
+  line-height: 28px;
+  padding: 0 1rem;
+  padding-left: 2.5rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  outline: none;
+  background-color: var(--color1);
+  color: #0d0c22;
+  transition: 0.3s ease;
 }
 
 .input::placeholder {
- color: #9e9ea7;
+  color: #9e9ea7;
 }
 
-.input:focus, input:hover {
- outline: none;
- border-color: var(--color1);
- background-color: #fff;
+.input:focus,
+input:hover {
+  outline: none;
+  border-color: var(--color1);
+  background-color: #fff;
 }
 
 .icon {
- position: absolute;
- left: 1rem;
- fill: #9e9ea7;
- width: 1rem;
- height: 1rem;
+  position: absolute;
+  left: 1rem;
+  fill: #9e9ea7;
+  width: 1rem;
+  height: 1rem;
 }
 
 /* bouton fermer */
-.fermer{
+.fermer {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.fermer button{
+.fermer button {
   border: none;
   height: 45px;
   padding: 8px;
   border-radius: 5px;
-  border: 2.5px solid #E0E1E4;
+  border: 2.5px solid #e0e1e4;
   box-shadow: 0px 0px 20px -20px;
   cursor: pointer;
   background-color: white;
@@ -512,7 +595,7 @@ table {
 }
 
 .fermer button:hover {
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   box-shadow: 0px 0px 20px -18px;
 }
 
@@ -524,7 +607,7 @@ table {
 .form {
   --background: #ffffff;
   --text: #414856;
-  --radio: #7C96B2;
+  --radio: #7c96b2;
   --radio-checked: var(--color2);
   --radio-size: 20px;
   --width: 150px;
@@ -564,10 +647,11 @@ table {
   justify-items: center;
   align-items: center;
   overflow: hidden;
-  transition: border .5s ease;
+  transition: border 0.5s ease;
 }
 
-.form input[type="radio"]::before, .form input[type="radio"]::after {
+.form input[type="radio"]::before,
+.form input[type="radio"]::after {
   content: "";
   display: flex;
   justify-self: center;
@@ -585,8 +669,8 @@ table {
 
 .form input[type="radio"]::after {
   position: relative;
-  width: calc(100% /2);
-  height: calc(100% /2);
+  width: calc(100% / 2);
+  height: calc(100% / 2);
   background: var(--radio-checked);
   top: var(--y, 100%);
   transition: top 0.5s cubic-bezier(0.48, 1.97, 0.5, 0.63);
@@ -598,7 +682,7 @@ table {
 
 .form input[type="radio"]:checked::after {
   --y: 0%;
-  animation: stretch-animate .3s ease-out .17s;
+  animation: stretch-animate 0.3s ease-out 0.17s;
 }
 
 .form input[type="radio"]:checked::before {
@@ -611,7 +695,7 @@ table {
 
 .form input[type="radio"]:not(:checked)::before {
   --opacity: 1;
-  transition: opacity 0s linear .5s;
+  transition: opacity 0s linear 0.5s;
 }
 
 @keyframes stretch-animate {
@@ -642,7 +726,7 @@ table {
 .socials > a {
   display: block;
   width: 30px;
-  opacity: .2;
+  opacity: 0.2;
   transform: scale(var(--scale, 0.8));
   transition: transform 0.3s cubic-bezier(0.38, -0.12, 0.24, 1.91);
 }
@@ -679,7 +763,6 @@ table {
   fill: white;
 }
 
-
 /* Legrand formulaire */
 
 .formulaire {
@@ -693,17 +776,17 @@ table {
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
 }
 
-.les_slides{
+.les_slides {
   display: flex;
 }
 
-.slides{
+.slides {
   overflow-y: auto;
 }
 .slides::-webkit-scrollbar {
   display: none;
 }
-.slides label{
+.slides label {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -746,7 +829,8 @@ table {
   font-size: 0.9em;
 }
 
-.formulaire label .input:focus + span,.form label .input:valid + span {
+.formulaire label .input:focus + span,
+.form label .input:valid + span {
   top: 30px;
   font-size: 0.7em;
   font-weight: 600;
@@ -764,7 +848,7 @@ table {
   border-radius: 10px;
   color: #fff;
   font-size: 16px;
-  transform: .3s ease;
+  transform: 0.3s ease;
 }
 
 .submit:hover {
@@ -773,7 +857,7 @@ table {
 
 /* Error-box */
 
-.error-box{
+.error-box {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 20px;
@@ -785,23 +869,23 @@ table {
 
 /* Select  */
 
-label select{
+label select {
   border: 1px solid var(--color2);
   border-radius: 5px;
   outline: none;
 }
 
-label option{
+label option {
   background-color: var(--color1);
 }
-label option:hover{
+label option:hover {
   background-color: white;
   color: white;
 }
 
 /* les boutons des tableaux */
 
-.boutons{
+.boutons {
   display: flex;
   justify-content: space-around;
 }
@@ -872,9 +956,8 @@ label option:hover{
 
 /* image de profile */
 
-.profile{
+.profile {
   height: 50px;
   width: 50px;
 }
-
 </style>
