@@ -40,51 +40,40 @@
         <button type="submit" class="icon" aria-label="Rechercher">
             <i class="fas fa-search"></i>
         </button>
-        <select class="diplome-select" name="diplome"  v-model="vu_candidat.diplome">
-                <option value="">Choisissez un diplôme</option>
-                <option value="bachelor">Bachelor</option>
-                <option value="master">Master</option>
-                <option value="doctorat">Doctorat</option>
-            </select>
-            <select class="secteur-select" name="secteur"  v-model="vu_candidat.secteur">
-                <option value="">Secteur d'activité</option>
-                <option value="technologie">Technologie</option>
-                <option value="finance">Finance</option>
-                <option value="education">Éducation</option>
-            </select>
+        
     </div>
 </form>
 </div>
 
 
 
-
-<div class="plan-card">
-    <h2>nom<span></span></h2>
+<div class="display">
+<div class="plan-card" v-for="appel_offre in appel_offres" :key="appel_offre.id_appel_doffre">
+    <h2>{{ appel_offre.nom_entreprise }}<span></span></h2>
     <div class="etiquet-price">
-        <p>diplome</p>
+        <p>{{ appel_offre.diplome_requis }} minimum</p>
         <div></div>
     </div>
-    <div class="benefits-list">
+    <div class="benefits-list" >
         <ul>
             <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"></path>
-                </svg><span>age</span></li>
+                </svg><span>{{ appel_offre.age }} ans minimum</span></li>
             <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"></path>
-                </svg><span>annee exp</span></li>
+                </svg><span>{{ appel_offre.anne_experience_requis }} ans d'experience minimum</span></li>
             <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"></path>
-                </svg><span>competence</span></li>
+                </svg><span>{{ appel_offre.competence }}</span></li>
             <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"></path>
-                </svg><span>nbre place</span></li> 
+                </svg><span>{{ appel_offre.nombre_de_poste_disponible }} places disponible</span></li> 
             <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"></path>
-                </svg><span>delai</span></li>   
+                </svg><span>fin le {{ appel_offre.date_cloture }}</span></li>   
             <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"></path>
-                </svg><span>activite principale</span></li> 
+                </svg><span>{{ appel_offre.activite_principale }}</span></li> 
         </ul>
     </div>
     <div class="button-get-plan">
@@ -95,8 +84,9 @@
             <span>POSTULER</span>
         </a>
     </div>
-    <div><h6>mission</h6></div>
+    <div><h6>{{ appel_offre.mission }}</h6></div>
     
+</div>
 </div>
 
 
@@ -146,9 +136,9 @@
         return{
             vu_candidat: {
         nom_entreprise: null,
-        diplome: null,
-        secteur: null,
+
       },
+      appel_offres:[],
       messageConfirmation: '',
         }
       },
@@ -159,15 +149,13 @@
   // Préparer les données pour l'envoi
   var data = new FormData();
   data.append('nom_entreprise', this.vu_candidat.nom_entreprise);
-  data.append('nbre_place', this.vu_candidat.secteur);
-  data.append('age', this.vu_candidat.diplome);
   
 
   // Envoyer les données
   axios.post('http://localhost/genie_logiciel/backend/backend_tilo/api_nouscontacter_entreprise.php?action=filtre_appel_offre', data)
     .then((res) => {
 
-      console.log(res.data);
+      this.appel_offres = res.data,
       // Réinitialiser le formulaire
       this.vu_candidat = {
         nom_entreprise: '',
@@ -211,9 +199,16 @@
         
         <style scoped>
     
-
-   
-
+.plan-card{
+    margin: 15px;
+}
+        
+    .display {
+        display: flex;
+        margin: 5px;
+        flex-wrap: wrap;
+        gap: 50px;
+    }
 
 
     .plan-card {
@@ -382,8 +377,8 @@
     cursor: pointer;
     padding: 0px 20px;
     transition: width 0.5s ease;
-    width: 750px;
-    height: 80px;
+    width: 300px;
+    height: 50px;
 }
 
 .search-box:hover .i-box input,
@@ -405,6 +400,7 @@
     transition: width 0.5s ease, padding 0.5s ease;
     width: 0;
     background-color: white;
+    height: 40px;
 }
 
 .search-box .fas {
@@ -413,7 +409,7 @@
     color: #C9B649;
     display: flex;
     font-size: 2em;
-    padding: 10px;
+    padding: 1px;
     position: relative;
     text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.377);
 }

@@ -3,7 +3,7 @@
         <font-awesome-icon class="icon menu" icon="bars" />
         <div class="user">
             <img class="img" src="../../../assets/images_yeo/employe.png" alt="">
-            <h5>Bienvenue <span class="animation">YEO</span></h5>
+            <h5>Bienvenue <span class="animation">admin</span></h5>
         </div>
         <section class="recherche">
             <button class="button">

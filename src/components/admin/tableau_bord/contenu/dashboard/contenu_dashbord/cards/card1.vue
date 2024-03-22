@@ -2,13 +2,10 @@
 import { ref } from 'vue';
 
 const donnees = ref([
-    {nom : 'Snapchat', date : '24/04/24', heure: '12h50',  logo: '../assets/images/snapchat.png'},
-    {nom : 'Insta', date : '24/04/24', heure: '12h50', logo: '../assets/images/snapchat.png' },
-    {nom : "Tweeter", date : '24/04/24', heure: '12h50', logo: '../assets/images/messager.png'},
-    {nom : 'Snapchat', date : '24/04/24', heure: '12h50',  logo: '../assets/images/snapchat.png'},
-    {nom : 'Insta', date : '24/04/24', heure: '12h50', logo: '../assets/images/linkedin.png'},
-    {nom : "Tweeter", date : '24/04/24', heure: '12h50',  logo: '../assets/images/snapchat.png'},
-    
+    {nom : 'Test 1', date : '01/05/24', heure: '12h50',  logo: '../assets/images/snapchat.png'},
+    {nom : 'Test 2', date : '30/04/24', heure: '12h50', logo: '../assets/images/snapchat.png' },
+    {nom : "Test 3", date : '02/04/24', heure: '12h50', logo: '../assets/images/messager.png'},
+   
 ]);
 </script>
 
@@ -29,7 +26,7 @@ const donnees = ref([
         </div>
         </div>
         <div class="footer">
-        <button type="button" class="action">Voir plus </button>
+        
         </div>
     </div>
 </template>

@@ -15,14 +15,14 @@
                     <li><a href="#">Services</a>
                         <ul class="subnav">
                             <li class="card-med" id="serv-groom">
-                                <div class="card-image"><img src="../src/assets/contacter.png"></div>
+                                <div class="card-image"><img src="../../assets/images_tilo/contacter.png"></div>
                                 <a href="#">
                                     <span>Nous contacter</span>
                                     
                                 </a>
                             </li>
                             <li class="card-med" id="serv-board">
-                                <div class="card-image"><img src="../src/assets/appel_doffre.png"></div>
+                                <div class="card-image"><img src="../../assets/images_tilo/3d_recherche.png"></div>
                                 <a href="#">
                                     <span>Appels d'offre</span>
                                     
@@ -103,7 +103,7 @@
                   </label>
                 </div>
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="submit" value="Continue" @click="se_connecter">
+                  <input type="submit" name="submit" value="Continue" >
                 </div>
                 <div v-if="messageConfirmation" class="message-confirmation">
                 {{ messageConfirmation }}
@@ -112,7 +112,7 @@
             </div>
           </div>
           <div class="footer-link padding-top--24">
-            <span>Revenir sur la <a href="">Page d'accueil</a></span>
+            <span>Revenir sur la <router-link to="/">Page d'accueil</router-link></span>
           </div>
         </div>
       </div>
@@ -186,11 +186,16 @@ import axios from "axios";
 
       // Optionnel : Stocker les informations de l'utilisateur dans localStorage pour la persistance à travers les sessions
       localStorage.setItem('user', JSON.stringify(this.user));
-
+        console.log(res);
       // Redirection vers la page 'client' avec les informations de l'utilisateur en tant que paramètres
-      
+      if(res.etat == 1){
       this.$router.push({ name: 'client' });
-    } else {
+    } else if (res.etat == 2){
+      this.$router.push({ name: 'tableau de bord' });
+    }else if (res.etat == 3){
+      this.$router.push({ name: 'dd' });
+    }
+ } else {
       // Gestion de l'erreur d'authentification
       alert(res.message);
       this.messageConfirmation = res.message;

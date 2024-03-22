@@ -2,12 +2,12 @@
 import { ref } from 'vue';
 
 const donnees = ref([
-    {nom : 'Entreprises', nombre : '5000', icon: 'cog'},
-    {nom : 'Candidats', nombre : '1000', icon: 'users' },
-    {nom : "Appels d'offre", nombre : '700', icon: 'pencil-square'},
-    {nom : 'Entreprises', nombre : '5000', icon: 'graduation-cap'},
-    {nom : 'Candidats', nombre : '1000', icon: 'user-plus'},
-    {nom : "Appels d'offre", nombre : '700', icon: 'fa-cloud'}
+    {nom : 'Entreprises', nombre : '2', icon: 'cog'},
+    {nom : 'Candidats', nombre : '1', icon: 'users' },
+    {nom : "Appels d'offre", nombre : '4', icon: 'pencil-square'},
+    {nom : 'Entreprises', nombre : '2', icon: 'graduation-cap'},
+    {nom : 'Candidats', nombre : '1', icon: 'user-plus'},
+    {nom : "Appels d'offre", nombre : '4', icon: 'fa-cloud'}
     
 ]);
 </script>
@@ -36,6 +36,7 @@ const donnees = ref([
     align-items: center;
     flex-wrap: wrap;
 }
+
 .stat1 {
   background-color: #F2EED1;
   display: flex;

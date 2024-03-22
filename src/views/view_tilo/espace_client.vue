@@ -38,7 +38,7 @@
                     </li> -->
                 </ul>
                 <div id="utility">
-                  <a href="#" class="connexion-link">
+                  <a href="#" class="connexion-link" @click.prevent="logout">
                     <span class="material-icons-outlined">Deconnexion</span>
                     <i class="fas fa-sign-in-alt"></i>
                   </a>
@@ -121,7 +121,15 @@ import axios from "axios";
       if (userData) {
         this.user = JSON.parse(userData);
       }
-    }
+    },
+    logout() {
+    // Effacer le stockage de session
+    localStorage.removeItem('user');
+    // Vous pourriez aussi vouloir effacer d'autres états dans votre store Vuex si vous l'utilisez
+
+    // Rediriger vers la page de connexion ou la page d'accueil
+    this.$router.push('/');
+  }
   }
     }
     

@@ -42,7 +42,7 @@
                       </li> -->
                   </ul>
                   <div id="utility">
-                    <a href="#" class="connexion-link">
+                    <a href="#" class="connexion-link" @click="logout">
                       <span class="material-icons-outlined">Deconnexion</span>
                       <i class="fas fa-sign-in-alt"></i>
                     </a>
@@ -88,9 +88,9 @@
           <td>{{ offre.competence }}</td>
           <td>{{ offre.activite_principale }}</td>
           <td>
-            <button @click="modifierOffre(offre.id)">Modifier</button>
-            <button @click="supprimerOffre(offre.id)">
-              <i class="fas fa-trash"></i>
+            
+            <button @click="supprimerOffre(offre.id_appel_doffre)">
+              <i class="fas fa-trash">Supprimer</i>
             </button>
           </td>
         </tr>
@@ -160,6 +160,14 @@
           }
        
         },
+        logout() {
+    // Effacer le stockage de session
+    localStorage.removeItem('user');
+    // Vous pourriez aussi vouloir effacer d'autres états dans votre store Vuex si vous l'utilisez
+
+    // Rediriger vers la page de connexion ou la page d'accueil
+    this.$router.push('/');
+  },
 
         chargerOffres() {
   var data = new FormData();
@@ -180,22 +188,27 @@
       console.error("Erreur lors de la requête:", error);
     });
 },
-    modifierOffre(id) {
-      // Logique pour modifier l'offre
-      // Peut-être rediriger vers un formulaire de modification avec l'ID de l'offre
-      console.log("Modifier l'offre", id);
-    },
-    supprimerOffre(id) {
-      // Appeler l'API pour supprimer l'offre
-      axios.post('votre_url/api_supprimer_appel_offre.php', { id: id, userId: this.user.id })
-        .then(response => {
-          console.log(response.data.message);
-          this.chargerOffres(); // Recharger les offres après suppression
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+ 
+supprimerOffre(idOffre) {
+  // Remplacer 'votre_url/api_supprimer_appel_offre.php' par l'URL correcte de votre API
+  var data = new FormData();
+  data.append('userId', this.user.id);
+  data.append('idOffre', idOffre); // Assurez-vous que le nom de ce champ correspond à ce que votre API PHP attend
+
+  axios.post('http://localhost/genie_logiciel/backend/backend_tilo/api_nouscontacter_entreprise.php?action=supprimer_appel', data)
+    .then(response => {
+      console.log("Réponse:", response.data.message);
+      if (response.data.success) {
+        alert("Offre supprimée avec succès.");
+        this.chargerOffres(); // Recharger les offres après la suppression
+      } else {
+        alert("Erreur lors de la suppression de l'offre.");
+      }
+    })
+    .catch(error => {
+      console.error("Erreur lors de la requête:", error);
+    });
+},
 
 
 
@@ -233,6 +246,45 @@
         <style scoped>
     
     
+    .table {
+  width: 100%;
+  border-collapse: collapse; /* Pour des bords nets et joints */
+  margin-top: 20px; /* Espace au-dessus du tableau */
+}
+
+.table th,
+.table td {
+  padding: 12px; /* Espace autour du contenu dans les cellules */
+  text-align: left; /* Alignement du texte */
+  border-bottom: 1px solid var(--light-02); /* Ligne de séparation */
+}
+
+.table th {
+  background-color: var(--brand-01); /* Couleur de fond pour les en-têtes */
+  color: var(--light-02); /* Couleur du texte pour les en-têtes */
+  font-weight: bold; /* Texte en gras pour les en-têtes */
+}
+
+.table tr:hover {
+  background-color: var(--brand-02); /* Couleur de fond au survol des lignes */
+}
+
+.table td button {
+  background-color: var(--brand-01); /* Couleur de fond pour les boutons */
+  color: var(--light-02); /* Couleur du texte pour les boutons */
+  border: none; /* Aucune bordure */
+  padding: 8px 16px; /* Espace autour du texte dans les boutons */
+  cursor: pointer; /* Change le curseur en main */
+  transition: background-color 0.3s ease; /* Transition pour le changement de couleur de fond */
+}
+
+.table td button:hover {
+  background-color: var(--text-01); /* Couleur de fond au survol */
+}
+
+.table .fas.fa-trash {
+  margin-right: 5px; /* Espace à droite de l'icône */
+}
     
     
     

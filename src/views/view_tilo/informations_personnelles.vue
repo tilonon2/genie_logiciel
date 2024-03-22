@@ -42,7 +42,7 @@
                       </li> -->
                   </ul>
                   <div id="utility">
-                    <a href="#" class="connexion-link">
+                    <a href="#" class="connexion-link" @click="logout">
                       <span class="material-icons-outlined">Deconnexion</span>
                       <i class="fas fa-sign-in-alt"></i>
                     </a>
@@ -88,7 +88,7 @@
                   <input type="text" name="localisation" v-model="modifier.localisation">
                 </div>
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="submit" value="Modifier" @click="modifier_info_1">
+                  <input type="submit" name="submit" value="Modifier" >
                 </div>
                 <div v-if="messageConfirmation" class="message-confirmation">
                 {{ messageConfirmation }}
@@ -111,7 +111,7 @@
                   <input type="file" @change="handleFileUpload($event)" name="logo">
                 </div>
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="submit" value="Modifier" @click="modifier_info">
+                  <input type="submit" name="submit" value="Modifier" >
                 </div>
                 <div v-if="messageConfirmation" class="message-confirmation">
                 {{ messageConfirmation }}
@@ -148,7 +148,7 @@
 
 
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="submit" value="Modifier" @click="modifier_info_3">
+                  <input type="submit" name="submit" value="Modifier" >
                 </div>
                 <div v-if="messageConfirmation" class="message-confirmation">
                 {{ messageConfirmation }}
@@ -258,6 +258,14 @@ methods: {
         console.error('Erreur', error);
         this.messageConfirmation = 'Une erreur est survenue. Veuillez réessayer.';
       });
+  },
+  logout() {
+    // Effacer le stockage de session
+    localStorage.removeItem('user');
+    // Vous pourriez aussi vouloir effacer d'autres états dans votre store Vuex si vous l'utilisez
+
+    // Rediriger vers la page de connexion ou la page d'accueil
+    this.$router.push('/');
   },
 
   // Méthode pour envoyer les données

@@ -14,7 +14,7 @@
                   
                   <ul class="navigation-menu">
       
-                      <li><a href="#">Fonctionnalites</a>
+                      <li><a href="#">Fonctionnalites </a>
                           <ul class="subnav">
                             
                               <li class="card-med" id="serv-groom">
@@ -42,7 +42,7 @@
                       </li> -->
                   </ul>
                   <div id="utility">
-                    <a href="#" class="connexion-link">
+                    <a href="#" class="connexion-link" @click="logout">
                       <span class="material-icons-outlined">Deconnexion</span>
                       <i class="fas fa-sign-in-alt"></i>
                     </a>
@@ -75,8 +75,8 @@
 
         </div>
         <div class="form-floating mb-3">
-          <input v-model="offre.nbre_place" id="password-confirm" type="number" class="form-control shadow-none border-danger" name="password_confirmation" required autocomplete="new-password" placeholder="nombre de poste disponible">
-          <label for="password-confirm" class="text-black-50">Nombre de poste disponible</label>
+          <input v-model="offre.nbre_place" id="password-confirm" type="number" class="form-control shadow-none border-danger" name="password_confirmation" required autocomplete="new-password" placeholder="nombre de place disponible">
+          <label for="password-confirm" class="text-black-50">Nombre de place disponible</label>
         </div>
 
         <div class="form-floating mb-3">
@@ -97,8 +97,12 @@
         <div class="form-floating mb-3">
         <select v-model="offre.competence" id="" class="form-control shadow-none border-danger">
             <option value="">Competences souhaites</option>
-            <option value="competence_1" class="text-black-50">competence 1</option>
-            <option value="competence_2" class="text-black-50">competence 2</option>
+            <option value="" class="text-black-50"></option>
+            <option value="travail en equipe" class="text-black-50">travail en equipe</option>
+            <option value="creativite" class="text-black-50">creativite</option>
+            <option value="esprit critique" class="text-black-50">esprit critique</option>
+            <option value="communication" class="text-black-50">communication</option>
+            <option value="prise de decision" class="text-black-50">prise de decision</option>
         </select>
         <label for="" class="text-black-50">Competence</label>
     </div>
@@ -106,8 +110,11 @@
         <div class="form-floating mb-3">
         <select v-model="offre.poste" id="" class="form-control shadow-none border-danger">
             <option value="">Poste souhaites</option>
-            <option value="competence_1" class="text-black-50">poste 1</option>
-            <option value="competence_2" class="text-black-50">poste 2</option>
+            <option value="directeur general" class="text-black-50">directeur general</option>
+            <option value="responsable communication" class="text-black-50">responsable communication</option>
+            <option value="Directeur des operations" class="text-black-50">Directeur des operations</option>
+            <option value="secretaire general" class="text-black-50">secretaire general</option>
+            <option value="Directeur de SI" class="text-black-50">Directeur de SI</option>
         </select>
         <label for="" class="text-black-50">Poste</label>
 
@@ -210,6 +217,14 @@ import axios from "axios";
         this.user = JSON.parse(userData);
       }
     },
+    logout() {
+    // Effacer le stockage de session
+    localStorage.removeItem('user');
+    // Vous pourriez aussi vouloir effacer d'autres états dans votre store Vuex si vous l'utilisez
+
+    // Rediriger vers la page de connexion ou la page d'accueil
+    this.$router.push('/');
+  },
 
   clique_appel_offre() {
   // Vérifier si tous les champs sont renseignés

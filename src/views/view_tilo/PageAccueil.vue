@@ -115,6 +115,7 @@
     
             <ul>
                 <li><a href="#">Pourquoi les chasseurs de tete</a></li>
+                <p>Les chasseurs de tête, souvent appelés recruteurs en recherche de cadres ou "headhunters" en anglais, jouent un rôle clé dans le marché de l'emploi, surtout pour les postes à responsabilité et les talents hautement spécialisés.</p>
             </ul>
                 
         </footer>
@@ -157,7 +158,6 @@ import { RouterLink } from 'vue-router';
     <style >
 
     @import url('../../assets/variables.css');
-    
     
     * {
         box-sizing: border-box;

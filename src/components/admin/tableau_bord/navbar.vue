@@ -14,7 +14,7 @@
         <button class="btn">
           <font-awesome-icon class="icons" icon="envelope" />
           <span class="text">Messagerie</span>
-          <p class="notif">05</p>
+          <p class="notif">00</p>
         </button>
       </router-link>
     </div>

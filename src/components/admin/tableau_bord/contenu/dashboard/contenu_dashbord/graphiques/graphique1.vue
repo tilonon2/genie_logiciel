@@ -14,7 +14,7 @@ onMounted(() => {
         labels: ['Credit', 'Debit'],
         datasets: [{
           label: 'My Pie Chart',
-          data: [6000000, 3000000],
+          data: [10000, 5000],
           backgroundColor: ['rgb(232, 232, 232)', '#C3B649']
         }]
       },
@@ -39,11 +39,11 @@ onMounted(() => {
         <div class="card-description">
             <h3 class="text-title"> Solde</h3>
             <div class="block">
-                <p class="text-body">Debit : <span>200000</span></p>
+                <p class="text-body">Debit : <span>10000</span></p>
                 <img src="../../../../../../../assets/images_yeo/augmenter.png">
             </div>    
             <div class="block">
-                <p class="text-body">Debit : <span>200000</span></p>
+                <p class="text-body">Debit : <span>5000</span></p>
                 <img src="../../../../../../../assets/images_yeo/decroissant.png" alt="">
             </div>
         </div>

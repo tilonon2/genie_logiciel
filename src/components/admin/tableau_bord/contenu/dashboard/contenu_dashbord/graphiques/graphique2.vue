@@ -17,33 +17,7 @@
                         <td>Tilonon SA</td>
                         <td>01/20/30</td>
                         <td><button class="button">Voir</button></td>
-                    </tr>
-                    <tr>
-                        <td>Tilonon SA</td>
-                        <td>01/20/30</td>
-                        <td><button class="button">Voir</button></td>
-                    </tr>
-                    <tr>
-                        <td>Tilonon SA</td>
-                        <td>01/20/30</td>
-                        <td><button class="button">Voir</button></td>
-                    </tr>
-                    <tr>
-                        <td>Tilonon SA</td>
-                        <td>01/20/30</td>
-                        <td><button class="button">Voir</button></td>
-                    </tr>
-                    <tr>
-                        <td>Tilonon SA</td>
-                        <td>01/20/30</td>
-                        <td><button class="button">Voir</button></td>
-                    </tr>
-                    <tr>
-                        <td>Tilonon SA</td>
-                        <td>01/20/30</td>
-                        <td><button class="button">Voir</button></td>
-                    </tr>
-                    
+                    </tr>                
                 </tbody>
             </table>
         </div>

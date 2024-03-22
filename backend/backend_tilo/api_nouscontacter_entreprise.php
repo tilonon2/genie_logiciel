@@ -87,7 +87,7 @@ if ($action == 'connexion') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$pseudo, $mdp]);
         $user = $stmt->fetch();
-        $etat;
+        
 
         if ($user) {
             $etat;
@@ -95,7 +95,28 @@ if ($action == 'connexion') {
                 $etat = 1;
             }else if(substr($pseudo, 0, 2) == "ad"){
                 $etat = 2;
-            }else()
+            }else if(substr($pseudo, 0, 2) == "ca"){
+                $etat = 3;
+            }else{
+                $etat = 0;
+            }
+
+            $action = "connexion";
+            
+            date_default_timezone_set('Africa/Abidjan');
+
+            // Récupérer la date et l'heure actuelles
+            $dateEtHeure = date('Y-m-d H:i:s');
+
+            $sqlmsg = "INSERT INTO gdcme (nom, date_heure, action) VALUES (?, ?, ?)";
+            $sqlmsgt = $pdo->prepare($sqlmsg);
+            $sqlmsgt->execute([$pseudo,$dateEtHeure, $action]);
+
+
+
+
+
+
 
 
             // Vous pouvez ici aussi démarrer une session et enregistrer les informations de l'utilisateur
@@ -112,7 +133,8 @@ if ($action == 'connexion') {
             $res = [
                 'success' => true, 
                 'message' => "Connexion réussie.",
-                'user' => $_SESSION['user'] // Inclure les informations de l'utilisateur dans la réponse
+                'user' => $_SESSION['user'], // Inclure les informations de l'utilisateur dans la réponse
+                'etat' => $etat
             ];
         } else {
             // Utilisateur non trouvé, préparer et envoyer une réponse JSON d'échec
@@ -170,6 +192,20 @@ if ($action == 'modifier_1') {
             ':localisation' => $localisation,
             ':userId' => $userId
         ]);
+
+        $action = "modification des informations personnelles";
+            
+            date_default_timezone_set('Africa/Abidjan');
+
+            // Récupérer la date et l'heure actuelles
+            $dateEtHeure = date('Y-m-d H:i:s');
+
+            $sqlmsg = "INSERT INTO gdcme (nom, date_heure, action) VALUES (?, ?, ?)";
+            $sqlmsgt = $pdo->prepare($sqlmsg);
+            $sqlmsgt->execute([$nom_entreprise,$dateEtHeure, $action]);
+
+
+
         echo json_encode(['success' => true, 'message' => 'Informations mises à jour avec succès.']);
 
     } catch (PDOException $e) {
@@ -207,6 +243,38 @@ if ($action == 'modifier_3') {
             $sqlUpdate = "UPDATE gdcee19 SET mot_de_passe = ? WHERE idEntreprise = ?";
             $stmtUpdate = $pdo->prepare($sqlUpdate);
             if ($stmtUpdate->execute([$nouveau_mdp, $userId])) {
+
+
+
+
+
+
+
+                $sql = "SELECT libEntreprise FROM gdcee19 WHERE idEntreprise = :idEntreprise";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([':idEntreprise' => $userId]);
+                $entreprise = $stmt->fetch(PDO::FETCH_ASSOC);
+                $nomEntreprise = $entreprise['libEntreprise'];
+        
+                $action = "Modification d'information personnelle";
+                
+                date_default_timezone_set('Africa/Abidjan');
+        
+                // Récupérer la date et l'heure actuelles
+                $dateEtHeure = date('Y-m-d H:i:s');
+        
+                $sqlmsg = "INSERT INTO gdcme (nom, date_heure, action) VALUES (?, ?, ?)";
+                $sqlmsgt = $pdo->prepare($sqlmsg);
+                $sqlmsgt->execute([$nomEntreprise,$dateEtHeure, $action]);
+
+
+
+
+
+
+
+
+
                 echo json_encode(['success' => true, 'message' => 'Mot de passe modifié avec succès.']);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Erreur lors de la modification du mot de passe.']);
@@ -235,6 +303,28 @@ if ($action == 'modifier_logo') {
             $sqlUpdate = "UPDATE gdcee19 SET lien_logo = :lien_logo WHERE idEntreprise = :userId";
             $stmtUpdate = $pdo->prepare($sqlUpdate);
             if ($stmtUpdate->execute([':lien_logo' => $destinationPath, ':userId' => $userId])) {
+
+
+
+                $sql = "SELECT libEntreprise FROM gdcee19 WHERE idEntreprise = :idEntreprise";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([':idEntreprise' => $userId]);
+                $entreprise = $stmt->fetch(PDO::FETCH_ASSOC);
+                $nomEntreprise = $entreprise['libEntreprise'];
+        
+                $action = "Modification d'information personnelle";
+                
+                date_default_timezone_set('Africa/Abidjan');
+        
+                // Récupérer la date et l'heure actuelles
+                $dateEtHeure = date('Y-m-d H:i:s');
+        
+                $sqlmsg = "INSERT INTO gdcme ( nom, date_heure, action) VALUES (?, ?, ?)";
+                $sqlmsgt = $pdo->prepare($sqlmsg);
+                $sqlmsgt->execute([$nomEntreprise,$dateEtHeure, $action]);
+
+
+                
                 echo json_encode(['success' => true, 'message' => 'Logo modifié avec succès.']);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Erreur lors de la modification du logo.']);
@@ -284,12 +374,31 @@ if ($action == 'modifier_logo') {
         $stmtSelect->execute([':id_entreprise' => $id_entreprise_connecte]);
         $resultSelect = $stmtSelect->fetch(PDO::FETCH_ASSOC);
 
-        if ($resultSelect && $resultSelect['nombre_dappel_doffre_restant'] > 0) {
+        if ($resultSelect && $resultSelect['nombre_dappel_doffre_restant'] > 0 && $date_cloture > $date ) {
 
             // Insertion de l'appel d'offre
             $sqlInsert = "INSERT INTO gdcae26 (id_appel_doffre, id_entreprise, date_publication, date_cloture, age, activite_principale, competence, nombre_de_poste_disponible, anne_experience_requis, diplome_requis, mission, active,poste,nom_entreprise,secteur_entreprise) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmtInsert = $pdo->prepare($sqlInsert);
             if ($stmtInsert->execute([$id_appel_offre, $id_entreprise_connecte, $date, $date_cloture, $age, $activite, $competence, $nbre_place, $annee_exp, $diplome, $mission, $active,$poste,$nom,$secteur])) {
+
+
+
+
+
+                $action = "Enregistrement d'appel d'offre";
+            
+            date_default_timezone_set('Africa/Abidjan');
+
+            // Récupérer la date et l'heure actuelles
+            $dateEtHeure = date('Y-m-d H:i:s');
+
+            $sqlmsg = "INSERT INTO gdcme (nom, date_heure, action) VALUES (?, ?, ?)";
+            $sqlmsgt = $pdo->prepare($sqlmsg);
+            $sqlmsgt->execute([$nom,$dateEtHeure, $action]);
+
+
+
+
                 $res = ['success' => true, 'message' => "Enregistrement avec succès"];
                 
 
@@ -365,7 +474,45 @@ if ($action == 'paiement') {
                ':id_entreprise' => $id_entreprise_connecte
            ]);
 
-           $res = ['success' => true, 'message' => "Le nombre d'appels d'offre restants a été mis à jour."];
+
+
+           $sql = "SELECT nombre_dappel_doffre_restant FROM gdcee19 WHERE idEntreprise = :userId";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':userId', $id_entreprise_connecte, PDO::PARAM_STR);
+
+            $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+
+
+        $sql = "SELECT libEntreprise FROM gdcee19 WHERE idEntreprise = :idEntreprise";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':idEntreprise' => $id_entreprise_connecte]);
+        $entreprise = $stmt->fetch(PDO::FETCH_ASSOC);
+        $nomEntreprise = $entreprise['libEntreprise'];
+
+        $action = "Paiement dun abonnement tiktak";
+        
+        date_default_timezone_set('Africa/Abidjan');
+
+        // Récupérer la date et l'heure actuelles
+        $dateEtHeure = date('Y-m-d H:i:s');
+
+        $sqlmsg = "INSERT INTO gdcme (nom, date_heure, action) VALUES (?, ?, ?)";
+        $sqlmsgt = $pdo->prepare($sqlmsg);
+        $sqlmsgt->execute([$nomEntreprise,$dateEtHeure, $action]);
+
+
+
+
+
+
+
+
+           $res = ['success' => true, 'message' => "Le nombre d'appels d'offre restants a été mis à jour.", 'nombreAppelsOffreRestants' => (int)$result['nombre_dappel_doffre_restant']];
        } else {
            $res = ['success' => false, 'message' => "Impossible de trouver l'entreprise spécifiée."];
        }
@@ -449,53 +596,74 @@ if ($action == 'voir_appel') {
       }
       exit;
     }
+
+
+
+    
+if ($action == 'supprimer_appel') {
+    session_start();
+  
+    // Vérifiez que tous les champs nécessaires sont présents
+    if (!isset($_POST['userId'], $_POST['idOffre'])) {
+        echo json_encode(['success' => false, 'message' => "Le champ userId et idOffre sont requis."]);
+        exit;
+    }
+  
+    $userId_entreprise = $_POST['userId'];
+    $idOffre = $_POST['idOffre'];
+  
+    try {
+        // Préparez la requête de suppression
+        $stmt = $pdo->prepare("DELETE FROM gdcae26 WHERE id_entreprise = :userId AND id_appel_doffre = :idOffre");
+        $stmt->execute(['userId' => $userId_entreprise, 'idOffre' => $idOffre]);
+  
+        if ($stmt->rowCount() > 0) {
+
+            $sql = "SELECT libEntreprise FROM gdcee19 WHERE idEntreprise = :idEntreprise";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':idEntreprise' => $userId_entreprise]);
+            $entreprise = $stmt->fetch(PDO::FETCH_ASSOC);
+            $nomEntreprise = $entreprise['libEntreprise'];
+
+            $action = "Suppression d'un appel d'offre";
+            
+            date_default_timezone_set('Africa/Abidjan');
+
+            // Récupérer la date et l'heure actuelles
+            $dateEtHeure = date('Y-m-d H:i:s');
+
+            $sqlmsg = "INSERT INTO gdcme (nom, date_heure, action) VALUES (?, ?, ?)";
+            $sqlmsgt = $pdo->prepare($sqlmsg);
+            $sqlmsgt->execute([$nomEntreprise,$dateEtHeure, $action]);
+
+
+
+
+
+
+
+            echo json_encode(['success' => true, 'message' => "L'offre a été supprimée avec succès."]);
+        } else {
+            echo json_encode(['success' => false, 'message' => "Aucune offre trouvée avec cet ID pour l'utilisateur."]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => "Erreur de base de données: " . $e->getMessage()]);
+    }
+    exit;
+}
   
 
 
     if ($action == 'filtre_appel_offre') {
-        $nom_entreprise = $_POST['nom_entreprise'] ?? '';
-        $diplome = $_POST['diplome'] ?? '';
-        $secteur = $_POST['secteur'] ?? '';
+        if(!empty($_POST['nom_entreprise'])){
+            $sql = "SELECT * FROM gdcae26 WHERE nom_entreprise LIKE '%query%'";
+        }else{
+            $sql = "SELECT * FROM gdcae26";
+        }
 
-        // Commencez par la requête de base avec une jointure
-    $sql = "SELECT gdcae26.* FROM gdcae26 
-    JOIN gdcee19 ON gdcae26.id_entreprise = gdcee19.idEntreprise WHERE ";
-
-    $conditions = [];
-
-        // Ajoutez des conditions basées sur les entrées
-    if (!empty($nom_entreprise)) {
-        $conditions[] = "gdcee19.libEntreprise LIKE :nom_entreprise";
-    }
-    if (!empty($diplome)) {
-        $conditions[] = "gdcae26.diplome_requis = :diplome";
-    }
-    if (!empty($secteur)) {
-        $conditions[] = "gdcee19.secteur_dactivite_entreprise = :secteur";
-    }
-
-
-     // Si aucun champ n'est rempli, sélectionnez tout sans les conditions WHERE
-     if (empty($conditions)) {
-        $sql = "SELECT gdcae26.* FROM gdcae26 JOIN gdcee19 ON gdcae26.id_entreprise = gdcee19.idEntreprise";
-    } else {
-        $sql .= implode(' AND ', $conditions);
-    }
 
     $stmt = $pdo->prepare($sql);
 
-
-
-    // Liez les paramètres s'ils existent
-    if (!empty($nom_entreprise)) {
-        $stmt->bindValue(':entreprise', '%' . $nom_entreprise . '%');
-    }
-    if (!empty($diplome)) {
-        $stmt->bindValue(':diplome', $diplome);
-    }
-    if (!empty($secteur)) {
-        $stmt->bindValue(':secteur', $secteur);
-    }
 
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

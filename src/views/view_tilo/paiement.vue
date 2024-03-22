@@ -42,7 +42,7 @@
                       </li> -->
                   </ul>
                   <div id="utility">
-                    <a href="#" class="connexion-link">
+                    <a href="#" class="connexion-link" @click="logout">
                       <span class="material-icons-outlined">Deconnexion</span>
                       <i class="fas fa-sign-in-alt"></i>
                     </a>
@@ -279,9 +279,20 @@
             this.user = JSON.parse(userData);
           }
         },
+        logout() {
+    // Effacer le stockage de session
+    localStorage.removeItem('user');
+    // Vous pourriez aussi vouloir effacer d'autres états dans votre store Vuex si vous l'utilisez
+
+    // Rediriger vers la page de connexion ou la page d'accueil
+    this.$router.push('/');
+  },
         getNombreAppelsOffreRestants() {
-      axios.get('http://localhost/genie_logiciel/backend/backend_tilo/api_nouscontacter_entreprise.php?action=getNombreAppels')
-        .then(response => {
+            var doto = new FormData();
+            doto.append('userId', this.user.id);
+
+      axios.get('http://localhost/genie_logiciel/backend/backend_tilo/api_nouscontacter_entreprise.php?action=getNombreAppels', doto)
+        .then((response) => {
           if (response.data.success) {
             this.nombreAppelsOffreRestants = response.data.nombreAppelsOffreRestants; // Mettre à jour la variable
           }
@@ -303,9 +314,9 @@
   axios.post('http://localhost/genie_logiciel/backend/backend_tilo/api_nouscontacter_entreprise.php?action=paiement', data)
     .then((res) => {
       if (res.data.success) {
-        console.log('succès', res.data);
+        console.log(res.data);
         this.messageConfirmation = 'Paiement effectué avec succès !';
-        this.getNombreAppelsOffreRestants();
+        this.nombreAppelsOffreRestants = res.data.nombreAppelsOffreRestants;
         this.paiement = {
           numero: '',
           nom: '',
@@ -315,7 +326,7 @@
           
         };
       } else {
-        console.log('erreur', res.data);
+        console.log(res.data);
         alert(res.data.message);
         this.messageConfirmation = res.data.message;
       }

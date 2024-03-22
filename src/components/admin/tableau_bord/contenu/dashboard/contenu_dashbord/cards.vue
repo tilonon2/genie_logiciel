@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import card from './cards/card1.vue'
-import card2 from './cards/card2.vue'
+
 import graphique3 from './graphiques/graphique3.vue'
 </script>
 
